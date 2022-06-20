@@ -5,7 +5,7 @@ module.exports = (sequelize) => {
   // defino el modelo
   sequelize.define('dog', {
     id: {
-      type:Datatypes.UUID,
+      type:DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
       allowNull: false
@@ -37,7 +37,7 @@ module.exports = (sequelize) => {
       }
     },
     age: {
-      type: Datatypes.INTEGER,
+      type: DataTypes.INTEGER,
       validate: {
         min: 1,
         max: 35,

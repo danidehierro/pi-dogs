@@ -9,6 +9,7 @@ export const POST_DOG="postdog";
 export const ORDER_NAME="ordername"
 export const ORDER_WEIGHT= "orderweight"
 export const FILTER_TEMPERAMENT="filtertemperament"
+export const FILTER_CREATED="filtercreated"
 
 
 
@@ -44,26 +45,26 @@ export function getTemperament(){
             try {
                 
                 var json = await axios.get(`http://localhost:3001/dogs?name=${name}`);
-                /* if(json.data === "error")throw Error */
+                if(json.data === "error")throw Error
                 return dispatch({
                     type: GET_NAMEDOG,
-                    payload: name
+                    payload: json.data
                 })
             } catch (error){
-                alert("Videogame not found");
+                alert("dogs not found");
                 window.location.href = "http://localhost:3000/home";
                 console.log(error)
                 
             }
         }}
-    export function postVideogame(payload){
+    export function postDog(payload){
         return async (dispatch) => {
           try {
             var createVideogame = await axios.post("http://localhost:3001/dog",payload);
             console.log("soy la accion",payload)
                return dispatch({
                 type: POST_DOG,
-                payload: payload
+                payload: payload.data
             })
             alert("New videogame is created!");
             return createVideogame;
@@ -95,3 +96,21 @@ export function getTemperament(){
             payload: value,
         }
     };
+    export function filterCreated(payload){
+        return{
+            type: FILTER_CREATED,
+            payload
+        }
+    }
+    export function orderName(payload){
+        return{
+            type: ORDER_NAME,
+            payload
+        }
+    }
+    export function orderWeight(payload){
+        return{
+            type: ORDER_WEIGHT,
+            payload
+        }
+    }

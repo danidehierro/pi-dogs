@@ -2,16 +2,10 @@ import React from "react";
 import {useEffect, useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { filterByTemp, getDogs, getTemperament } from "../../action";
+import { filterByTemp, getDogs, getTemperament, filterCreated,orderName, orderWeight } from "../../action";
 import Card from "../Card/card";
-
-
-
-
-
-
-
-
+import Search from "../Search/search";
+import Paginacion from "../paginacion/paginacion";
 
 
 
@@ -22,7 +16,7 @@ export default function Home (){
    
     const [orden,setOrden]= useState('')
     const [currentPage, setCurrentPage] = useState(1)
-    const [dogPerPage] = useState(15)
+    const [dogPerPage] = useState(9)
     const indexOfLastDog = currentPage * dogPerPage // 6
     const indexOfFirstDog = indexOfLastDog - dogPerPage // 0
     const currentDog = allDogs?allDogs.slice(indexOfFirstDog, indexOfLastDog ):false
@@ -42,7 +36,25 @@ export default function Home (){
      function handleFilterTemperament(e){
         dispatch(filterByTemp(e.target.value))
         
+        
     }
+    function handleSort (e){
+        e.preventDefault();
+        dispatch(orderName(e.target.value))
+        setCurrentPage(1);
+        setOrden(`orden ${e.target.value}`);
+    }
+    function handleSort2 (e){
+        e.preventDefault();
+        dispatch(orderWeight(e.target.value))
+        setCurrentPage(1);
+        setOrden(`orden ${e.target.value}`);
+    }
+    function handleFilterCreated(e){
+        dispatch(filterCreated(e.target.value))
+        setCurrentPage(1);
+    }
+
     return (
         <div className="navcontainer">
     
@@ -54,16 +66,13 @@ export default function Home (){
       </Link>
         <div>
             <div className="search">
-            <select className="abc" /* onChange={e => handleSort(e)} */>
+            <select className="abc" onChange={e => handleSort(e)}>
                <option value= 'asc'> A to Z  </option>
                <option value= 'des'> Z to A </option>
+               <option value= 'low'> For Low weight </option>
+               <option value= 'high'> BY High weight </option>
                </select>
-               
-               <select className="abc"/*  onChange={e => handleSort2(e)} */>
-               <option value= 'asc'> For Low weight </option>
-               <option value= 'des'> BY High weight </option>
-               </select>
-               <select className="abc" /* onChange={e => handleFilterCreated(e)} */>
+               <select className="abc" onChange={e => handleFilterCreated(e)}>
                 <option value= 'All'> All Dogs </option>
                 <option value= 'api'> Existing </option>
                 <option value= 'created'> Created  </option>
@@ -78,20 +87,20 @@ export default function Home (){
                  })}
                  </select>
     
-            {/*    <Search/>
+               <Search/>
                </div>
-               {console.log(currentGame)}
+               
             </div>
             <Paginacion 
             dogPerPage= {dogPerPage}
             allDogs={allDogs.length}
-            paginacion={paginacion}/> */}
+            paginacion={paginacion}/>
                 {console.log(allDogs)}
                <div className="container">
               {
              
     
-         allDogs ?  allDogs.map((el , index) => {
+         currentDog?  currentDog.map((el , index) => {
                         return(
                             
                             <div className="cardContainer" key={index}>
@@ -119,7 +128,7 @@ export default function Home (){
     
             </div>
             
-        </div>
-        </div>
+        
+        
         )}
 

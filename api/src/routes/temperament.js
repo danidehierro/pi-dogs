@@ -16,7 +16,7 @@ async function getTemperaments(){
     let temperaments = apiResult.data.map(e => e.temperament);
     
     temperaments = temperaments.join().split(",");
-    console.log(temperaments)
+    
     let temp = temperaments.map((e) => {
         if(e[0] === ' '){
             return e.slice(1)

@@ -15,38 +15,28 @@ module.exports = (sequelize) => {
       allowNull: false,
     },
     height: {
-      type: DataTypes.FLOAT,
+      type: DataTypes.STRING,
       allowNull: false,
-      validate:{
-        max: 100
-      },
-      get(){
-        const value= this.getDataValue('height')
-        return `${value} cm`
-      }
+     
     },
     weight: {
-      type: DataTypes.FLOAT,
+      type: DataTypes.STRING,
       allowNull: false,
-      validate:{
-        max: 150
-      },
-      get(){
-        const value = this.getDataValue('weight')
-        return value ? `${value} kg` : null
-      }
+     
     },
     age: {
-      type: DataTypes.INTEGER,
-      validate: {
-        min: 1,
-        max: 35,
-      }
+      type: DataTypes.STRING,
+    
     },
     img:{
       type: DataTypes.STRING(1234),
       defaultValue: 'Image not found'
-    }
+    },
+    createdInDb:{
+      type: DataTypes.BOOLEAN,
+      allowNull:false,
+      defaultValue: true,
+    },
   }, {
     timestamps:false
   } );

@@ -114,27 +114,29 @@ Incluir los temperamentos asociados
 */
 
 router.get('/:id', async (req, res) =>{
-    let {id} = req.params;
+    const {id} = req.params;
     // console.log('SOY EL ID: ',id)
     if(id){
         try{
-            const apiResult = await axios.get(`https://api.thedogapi.com/v1/breeds`,{headers: {'x-api-key': `${API_KEY}`}})
-
-            const result = apiResult.data.find(e => e.id === Number(id));
+           
+            const result = await Dog.findOne({ where:{ id:id}})
             if(result){
+                console.log("soy el result",result)
                 return res.send({
-                    id: result.id,
-                    img: result.image.url,
-                    name: result.name,
-                    temperament: result.temperament,
-                    weight: result.weight.metric,
-                    height: result.height.metric,
-                    age: result.life_span
+                    id: result.dataValues.id,
+                    img: result.dataValues.img,
+                    name: result.dataValues.name,
+                    temperament: result.dataValues.temperament,
+                    weight: result.dataValues.weight,
+                    height: result.dataValues.height,
+                    age: result.dataValues.age
                 })
             } 
             else {
                 try{
-                    const result = await Dog.findByPk(id , {include: Temperament})
+                    const apiResult = await axios.get(`https://api.thedogapi.com/v1/breeds`,{headers: {'x-api-key': `${API_KEY}`}})
+
+                    const result = apiResult.data.find(e => e.id === Number(id));
                     if(result){
                         return res.send({
                             id: result.id,

@@ -15,7 +15,7 @@ async function getTemperaments(){
     const apiResult = await axios.get(`https://api.thedogapi.com/v1/breeds`,{headers: {'x-api-key': `${API_KEY}`}})
     let temperaments = apiResult.data.map(e => e.temperament);
     
-    temperaments = temperaments.join().split(",");
+    temperaments = temperaments.join().split(", ");
     
     let temp = temperaments.map((e) => {
         if(e[0] === ' '){
@@ -37,10 +37,10 @@ router.get('/', async (req, res) =>{
         });
     });
 
-    let t = await Temperament.findAll()
-    const first = t.shift();
+    let temp = await Temperament.findAll()
+    const first = temp.shift();
 
-    res.send(t)
+    res.send(temp)
 });
 
 

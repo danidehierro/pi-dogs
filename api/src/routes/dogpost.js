@@ -10,7 +10,7 @@ Crea una raza de perro en la base de datos
 router.post('/', async (req, res) =>{
 
     let {img, name, height, weight, age, temperament} = req.body;
-     console.log( "spy el post",img, name, height, weight, age, temperament)
+     
     if(!name || !height || !weight){
         res.send('Necessary data missing')
     }

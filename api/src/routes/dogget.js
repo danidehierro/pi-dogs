@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const axios = require('axios');
+/* const { NUMBER } = require('sequelize/types'); */
 const { API_KEY} = process.env;
 const { Dog, Temperament } = require('../db');
 
@@ -116,51 +117,49 @@ Incluir los temperamentos asociados
 router.get('/:id', async (req, res) =>{
     const {id} = req.params;
     // console.log('SOY EL ID: ',id)
-    if(id){
-        try{
-           
-            const result = await Dog.findOne({ where:{ id:id}})
+    try{
+    if("apiResult"){
+        
+            const apiResult = await axios.get(`https://api.thedogapi.com/v1/breeds`,{headers: {'x-api-key': `${API_KEY}`}})
+            const result = apiResult.data.find(e => e.id === Number(id));
             if(result){
-                console.log("soy el result",result)
                 return res.send({
-                    id: result.dataValues.id,
-                    img: result.dataValues.img,
-                    name: result.dataValues.name,
-                    temperament: result.dataValues.temperament,
-                    weight: result.dataValues.weight,
-                    height: result.dataValues.height,
-                    age: result.dataValues.age
+                    id: result.id,
+                    img: result.image.url,
+                    name: result.name,
+                    temperament: result.temperament,
+                    weight: result.weight.metric,
+                    height: result.height.metric,
+                    age: result.life_span
                 })
-            } 
-            else {
-                try{
-                    const apiResult = await axios.get(`https://api.thedogapi.com/v1/breeds`,{headers: {'x-api-key': `${API_KEY}`}})
-
-                    const result = apiResult.data.find(e => e.id === Number(id));
+            
+        }
+           
+             
+     }if("result")  {
+                
+                    const result = await Dog.findOne({ where:{ id:id}})
                     if(result){
+                        console.log("soy el result",result)
                         return res.send({
-                            id: result.id,
-                            img: result.image.url,
-                            name: result.name,
-                            temperament: result.temperament,
-                            weight: result.weight,
-                            height: result.height,
-                            age: result.life_span
-                        })
-                    }
-                }
-                catch(e){
-                    return res.status(404).send(`No dog founded for id ${id}`)
-                }
+                            id: result.dataValues.id,
+                            img: result.dataValues.img,
+                            name: result.dataValues.name,
+                            temperament: result.dataValues.temperament,
+                            weight: result.dataValues.weight,
+                            height: result.dataValues.height,
+                            age: result.dataValues.age
+                        })}
+                    
+            
             }
-        }
-        catch(e){
-            res.status(404).send(e)
-        }
-    }else{
-        res.status(404).send(`Error , ${id}`)
-    }
-});
+        
+        
+    
+}catch(e){
+    return res.status(404).send(`No dog founded for id ${id}`)
+}}
+);
 
 
 module.exports = router;

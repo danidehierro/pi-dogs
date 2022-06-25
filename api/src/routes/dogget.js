@@ -29,7 +29,8 @@ router.get('/', async (req, res) =>{
                     id: e.id,
                     img: e.image.url,
                     name: e.name,
-                    temperament: e.temperament,
+                    temperament: [e.temperament].join().split(",").map((e) =>e.trim()),
+                   /*  temperament: e.temperament, */
                     weight: e.weight.metric
                 }
             })

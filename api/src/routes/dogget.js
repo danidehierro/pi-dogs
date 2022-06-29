@@ -63,7 +63,7 @@ router.get('/', async (req, res) =>{
                         id: e.id,
                         img: `https://cdn2.thedogapi.com/images/${e.reference_image_id}.jpg`,
                         name: e.name,
-                        temperament: e.temperament,
+                        temperament: e.temperament.split(", "),
                         weight: e.weight.metric
                     })
                 }

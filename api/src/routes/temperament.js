@@ -15,7 +15,7 @@ async function getTemperaments(){
     const apiResult = await axios.get(`https://api.thedogapi.com/v1/breeds`,{headers: {'x-api-key': `${API_KEY}`}})
     let temperaments = apiResult.data.map(e => e.temperament);
     
-    temperaments = temperaments.join().split(", ");
+    temperaments = temperaments.toString().trim().split(/\s*,\s*/);;
     
     let temp = temperaments.map((e) => {
         if(e[0] === ' '){
@@ -25,22 +25,23 @@ async function getTemperaments(){
             return e;
         }
     });
+   
     return temp;
 }
 
 router.get('/', async (req, res) =>{
-    let temperaments = await getTemperaments();
-   
-    temperaments.sort().forEach((element) => {
+    let temperament = await getTemperaments();
+   /*  console.log("soy los temperamentos",temperaments) */
+    temperament.sort().forEach((element) => {
         Temperament.findOrCreate({
             where: { name: element },
         });
     });
 
-    let temp = await Temperament.findAll()
-    const first = temp.shift();
-
-    res.send(temp)
+    let tem = await Temperament.findAll()
+    const first = tem.shift();
+     console.log("soy el tem")
+    res.send(tem)
 });
 
 

@@ -17,9 +17,9 @@ Si no existe ninguna raza de perro mostrar un mensaje adecuado
 */
 
 router.get('/', async (req, res) =>{
-
-    let {name} = req.query;
-
+     
+    const {name} = req.query;
+    console.log("soy el nombre ", name)
     if(!name){
         try{
             const apiResult = await axios.get(`https://api.thedogapi.com/v1/breeds`,{headers: {'x-api-key': `${API_KEY}`}})
@@ -30,7 +30,6 @@ router.get('/', async (req, res) =>{
                     img: e.image.url,
                     name: e.name,
                     temperament: [e.temperament].join().split(",").map((e) =>e.trim()),
-                   /*  temperament: e.temperament, */
                     weight: e.weight.metric
                 }
             })
@@ -55,19 +54,21 @@ router.get('/', async (req, res) =>{
 
     }else{
         try{
-            const apiResult = await axios.get(`https://api.thedogapi.com/v1/breeds`,{headers: {'x-api-key': `${API_KEY}`}})
-            var breeds = []
-            apiResult.data.forEach(e => {
+            const apiResult = await axios.get(`https://api.thedogapi.com/v1/breeds/search?q=${name}`,{headers: {'x-api-key': `${API_KEY}`}})
+            const breeds = []
+            console.log("soy la api",apiResult.data);
+            apiResult.data.map(e => {
                 if(e.name.toLowerCase().includes(name.toLowerCase())){
                     breeds.push({
                         id: e.id,
-                        img: e.image.url,
+                        img: `https://cdn2.thedogapi.com/images/${e.reference_image_id}.jpg`,
                         name: e.name,
                         temperament: e.temperament,
                         weight: e.weight.metric
                     })
                 }
             });
+            console.log("soy el perro",breeds)
             if (breeds.length>0){
                 const breedsDB = await Dog.findAll({
                     include: {
@@ -81,8 +82,9 @@ router.get('/', async (req, res) =>{
                         name: name
                     }
                 });
-                let allBreeds = [...breeds,...breedsDB]
-                return res.send(allBreeds)
+                const allBreeds = breeds.concat(breedsDB)
+                console.log("el final",allBreeds)
+                res.send(allBreeds)
             }else {
                 const breedsDB = await Dog.findAll({
                     include: {
@@ -139,14 +141,14 @@ router.get('/:id', async (req, res) =>{
              
      }if("result")  {
                 
-                    const result = await Dog.findOne({ where:{ id:id}})
+                    const result = await Dog.findByPk(id, {include: Temperament})
                     if(result){
                         console.log("soy el result",result)
                         return res.send({
                             id: result.dataValues.id,
                             img: result.dataValues.img,
                             name: result.dataValues.name,
-                            temperament: result.dataValues.temperament,
+                            temperament: result.dataValues.temperaments.map(e => e.name).join(", "),
                             weight: result.dataValues.weight,
                             height: result.dataValues.height,
                             age: result.dataValues.age

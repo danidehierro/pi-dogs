@@ -1,0 +1,54 @@
+.navcontainer{
+    padding-top: 20px;
+   /*  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),url("../Landing/image/imagehome.jpg") no-repeat; */
+    background-attachment: fixed;
+    background-size: cover;
+    position: relative;
+    
+
+ }
+ .titlehome{
+     color:blue;
+     text-shadow: -2px 3px 2px #FFFFFF;
+     font-size:50px;
+ }
+ .cardContainer{
+     text-decoration: none;
+ }
+ .link{
+     text-decoration: none;
+ }
+ .LOADING{
+     color:aqua;
+ }
+ .my_button{
+     margin: 20px;
+     background: #ECE9E6; 
+     background: -webkit-linear-gradient(to right, #FFFFFF, #ECE9E6);
+     background: linear-gradient(to right, #FFFFFF, #ECE9E6); 
+     padding: 10px 20px;
+     color: rgba(68, 68, 69, 1.00);
+     letter-spacing: 3px;
+     font-size: 18px;
+     transition: 0.2s;
+     border-radius: 10px;
+     border: none;
+     left: 70px;
+     cursor: pointer;
+ }
+ 
+ 
+ .my_button:hover{
+ color: rgb(20, 224, 231);
+ box-shadow: 0 10px 15px rgba(5, 4, 8, 0.397);
+ border: none;
+ cursor: pointer;
+ }
+ .search{
+     font-size:x-large;
+ 
+ }
+ 
+ .abc{
+     background-color: rgba(68, 133, 230, 0.226);
+ }

@@ -15,7 +15,11 @@ export default function Search(){
 
     function handleSubmit(e){
         e.preventDefault()
-        dispatch(getNameDog(name));
+        if(name){
+        dispatch(getNameDog(name[0].toUpperCase() + name.slice(1, name.length).toLocaleLowerCase()));}
+        setName("");
+        document.getElementsByClassName("search2")[0].value= "";
+        
     }
     return (
         <div>
@@ -24,7 +28,7 @@ export default function Search(){
             type='text'
             placeholder="Search Dog..."
             onChange={(e) => handleInputChange(e)}/>
-
+             
             <button className="btnserch" type='submit' onClick={(e) => handleSubmit(e)}>Search</button>
 
 

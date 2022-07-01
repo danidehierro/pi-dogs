@@ -11,7 +11,7 @@ export default function Detail(props){
   const id = props.match.params.id;
   var dog = useSelector((state) => state.Detail)
   console.log("soy detail estado",dog)
-
+ 
 
   
  
@@ -23,20 +23,23 @@ export default function Detail(props){
 
   console.log("soy el detalle",dog)
   return (
+    
       <div className="detailContainer">
          {dog && dog.id == id ?  (
          <div className="detail">
              <img className="imgdetail" src={dog.img} alt= 'not found'/>
-            <h1>{dog.name}</h1>
-            <h2>{dog.temperament}</h2>
-            <h2>{dog.age}</h2>
-            <h2>{dog.weight}</h2>
-             <h2>{dog.height}</h2>
+            <h1 className="titl">{dog.name}</h1>
+            <p>{"Temperaments: "+ 
+            dog.temperament}</p>
+           
+            <h3>{dog.age}</h3>
+            <h3>{dog.weight+" kg"}</h3>
+             <h3>{dog.height+" cm"}</h3>
          <Link to= '/home'>
             <button className="btndet"> go Back</button>
         </Link>
 
-      </div>): 
+    </div>): 
       <div>
              
             <img src="https://i.stack.imgur.com/hzk6C.gif" alt="#" width={"400vh"} height={"300vh"} />

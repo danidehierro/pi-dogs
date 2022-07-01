@@ -2,7 +2,7 @@
     display: grid;
     grid-template-columns: 190px;
     grid-template-rows: 25px ;
-    
+    text-decoration: none;
     
     width: 190px;
     height: 350px;
@@ -56,13 +56,13 @@
     margin: -7px;
 
 }
-.generos{
+.temperament{
    display: flex;
-   
+   text-decoration: none;
     margin: -15px;
     color:rgb(3, 3, 3);
 }
-.generos2{
-   
+.weigth{
+    text-decoration: none;
     color:black;
 }

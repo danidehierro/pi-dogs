@@ -14,8 +14,8 @@ import { GET_DOGS,
          POST_DOG,
         FILTER_TEMPERAMENT,
         FILTER_CREATED,
-      ORDER_NAME, 
-      ORDER_WEIGHT} from "../action";
+      ORDER_NAME 
+  } from "../action";
 
 
 
@@ -30,7 +30,7 @@ const initialState = {
     allDogs: [],
     temperaments: [],
     Detail: [],
-    
+    dogsfilter:[]
   };
   
   function rootReducer(state = initialState, action) {
@@ -40,7 +40,7 @@ const initialState = {
           ...state,
           Dogs: action.payload,
           allDogs: action.payload,
-          
+          dogsfilter: action.payload
         };
         case GET_TEMPERAMENTS:
             return{
@@ -53,20 +53,32 @@ const initialState = {
                     Detail:action.payload
                 }
                 case GET_NAMEDOG:
-                    return{
-                        ...state,
-                        Dogs: action.payload
-                    }
+                if(action.payload.length === 0){ alert("dog not found");
+                return {...state}
+              }
+                  return {
+                    
+                    ...state,
+                    Dogs: action.payload,
+                    
+                  };
                     case POST_DOG:
                         return{
                             ...state,
                         }
 
                 case FILTER_TEMPERAMENT:
-                    state.Dogs = state.allDogs;
-                    let Filtered = action.payload === 'All' ?  state.Dogs :  state.Dogs.filter(el => el.temperament.split(", ").map(ele => ele).includes(action.payload))
+                 
+                   let Filtered = action.payload === 'All' ?  state.dogsfilter :  state.dogsfilter.filter((el) => {
+                    if(el.temperament && el.temperament.includes(action.payload)){
+                    return el
+                  }else if(el.temperaments && el.temperaments.map(el => el.name).includes(action.payload) ){
+                   return el
+                  }
+                    }
+                   );
                     console.log(Filtered)
-                    if(Filtered.length !== 0){
+                    if(Filtered.length > 0){
                    return{
                      ...state,
                      Dogs: Filtered
@@ -81,23 +93,27 @@ const initialState = {
                  case FILTER_CREATED:
         console.log("filtro reducer", action.payload)
         let copy = state.allDogs;
+        
         let createdFiltered;
         if (action.payload === "created") {
           createdFiltered = copy.filter((e) => e.createdInDb);
           createdFiltered.length === 0
-            ? alert("videogame not created")
+            ? alert("Dog not created")
             : console.log("ok");
         } else if (action.payload === "api") {
           createdFiltered = copy.filter((e) => !e.createdInDb);
         } else {
+          console.log("ingrese al else")
           createdFiltered = copy;
         }
         console.log(createdFiltered)
         return {
           ...state,
-          Dogs: createdFiltered //length === 0 ? copy : createdFiltered,
+          Dogs: createdFiltered,
+          dogsfilter: createdFiltered //length === 0 ? copy : createdFiltered,
         };
         case ORDER_NAME: {
+          console.log("soy el payload accion", action.payload);
             const Dogs1 =  [...state.Dogs]
             let sortDogs
             if(action.payload === "a-z") {
@@ -120,30 +136,18 @@ const initialState = {
                 }
                 return 0;
               })
-            } else if(action.payload === "high"){
-               sortDogs = Dogs1.sort((a, b) => {
-                if (a.weight > b.weight) {
-                  return 1;
-                }
-                if (a.weight < b.weight) {
-                  return -1;
-                }
-                return 0;
-              })
             } else if(action.payload === "low"){
-               sortDogs = Dogs1.sort((a, b) => {
-                if (a.weight > b.weight) {
-                  return -1;
-                }
-                if (a.weight < b.weight) {
-                  return 1;
-                }
-                return 0;
-              });
+               sortDogs = Dogs1.sort((a,b) => {
+                if(parseInt(a.weight.split("-")[0]) === parseInt(b.weight.split("-")[0])) return parseInt(a.weight.split("-")[1]) - parseInt(b.weight.split("-")[1])
+                else return parseInt(a.weight.split("-")[0]) - parseInt(b.weight.split("-")[0])})
+            } else if(action.payload === "high"){
+               sortDogs = Dogs1.sort((a,b) => {
+                if(parseInt(b.weight.split("-")[0]) === parseInt(a.weight.split("-")[0])) return parseInt(b.weight.split("-")[1]) - parseInt(a.weight.split("-")[1])
+                else return parseInt(b.weight.split("-")[0]) - parseInt(a.weight.split("-")[0])});
             }
               return {
                   ...state,
-                  Dogs: action.payload === "alpha" ? Dogs1 : sortDogs
+                  Dogs: action.payload === "All" ? Dogs1 : sortDogs
               }
           }
                   

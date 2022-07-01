@@ -1,6 +1,7 @@
 import React , { useState, useEffect } from 'react';
 import { useDispatch , useSelector } from 'react-redux';
 import { postDog , getTemperament} from '../../action/index';
+import { Link } from 'react-router-dom';
 import './createDog.css'
 /* import  validate  from './validations'; */
 
@@ -50,9 +51,9 @@ export default function Create() {
             else if(parseInt(value.minWeight) > parseInt(value.maxWeight)){
                 errors.weight= 'Minimum weight cannot be greater than maximum weight.'
             }
-            // else if(parseInt(value.minWeight) > 150 || parseInt(value.maxWeight) > 150){
-            //     errors.height= 'weight cannot be greater than 150'
-            // }
+             else if(parseInt(value.minWeight) > 120 || parseInt(value.maxWeight) > 120){
+               errors.weight= 'weight cannot be greater than 120'
+             }
             else errors.weight = '';
         }
         else errors.weight = 'Weight is required.';
@@ -64,9 +65,9 @@ export default function Create() {
             else if(parseInt(value.minHeight) > parseInt(value.maxHeight)){
                 errors.height= 'Minimum height cannot be greater than maximum height.'
             }
-            // else if(parseInt(value.minHeight) > 150 || parseInt(value.maxHeight) > 150){
-            //     errors.height= 'height cannot be greater than 150'
-            // }
+            else if(parseInt(value.minHeight) > 120 || parseInt(value.maxHeight) > 120){
+                errors.height= 'height cannot be greater than 120'
+            }
             else errors.height = '';
         }
         else errors.height = 'Height is required.';
@@ -78,9 +79,9 @@ export default function Create() {
             else if(parseInt(value.minAge) > parseInt(value.maxAge)){
                 errors.age= 'Minimum age cannot be greater than maximum age.'
             }
-            // else if(parseInt(value.minHeight) > 150 || parseInt(value.maxHeight) > 150){
-            //     errors.height= 'height cannot be greater than 150'
-            // }
+            else if(parseInt(value.minAge) > 35 || parseInt(value.maxAge) > 35){
+                errors.height= 'Age cannot be greater than 35'
+             }
             else errors.age = '';
         }
         else errors.age = 'Age is required.';
@@ -131,7 +132,7 @@ export default function Create() {
     completeyears = completeyears.join(" - ");
     completeyears = completeyears + " years ";
     let addDog = {
-        name: input.name,
+        name: input.name[0].toUpperCase() + input.name.slice(1, input.name.length).toLocaleLowerCase(),
         img: input.img,
         temperament: input.temperament,
         height: completeheight,
@@ -140,7 +141,7 @@ export default function Create() {
       };
       e.preventDefault();
       if(input.name && input.img && completeheight &&  completeweight &&
-          completeyears && input.temperament){
+          completeyears && input.temperament.length > 0){
         dispatch(postDog(addDog))
         alert("Breed was created successfully");
 
@@ -162,7 +163,8 @@ export default function Create() {
     }
 
     return (
-        <div >
+        <div className='containe'>
+        <div className='containerdogs'>
           <form id="breedForm" className='divForm' onSubmit={handleSubmit}>
             <div>
                 <label>Name: </label>
@@ -170,27 +172,27 @@ export default function Create() {
                 {errors.name && (<p className='danger'>{errors.name}</p>)}
             </div>
             <div>
-                <p>Weight</p>
+                <p>Weight(1 to 120Kg):</p>
                 <label>Min: </label>
-                <input type="text" name='minWeight' value={input.minWeight} onChange={handleChange}  />
+                <input type="number" name='minWeight' max="120" value={input.minWeight} onChange={handleChange}  />
                 <label>Max: </label>
-                <input type="text" name='maxWeight' value={input.maxWeight} onChange={handleChange} />
+                <input type="number" name='maxWeight' max="120" value={input.maxWeight} onChange={handleChange} />
                 {errors.weight && (<p className='danger'>{errors.weight}</p>)}
             </div>
             <div>
-                <p>Height</p>
+                <p>Height(1 to 120Cm):</p>
                 <label>Min: </label>
-                <input type="text" name='minHeight' value={input.minHeight} onChange={handleChange} />
+                <input type="number" name='minHeight' max="120" value={input.minHeight} onChange={handleChange} />
                 <label>Max: </label>
-                <input type="text" name='maxHeight' value={input.maxHeight} onChange={handleChange} />
+                <input type="number" name='maxHeight' max="120" value={input.maxHeight} onChange={handleChange} />
                 {errors.height && (<p className='danger'>{errors.height}</p>)}
             </div>
             <div>
-                <p>Average life: </p>
+                <p>Age(1 to 35years): </p>
                 <label>Min: </label>
-                <input type='text' name='minAge' max='35' value={input.minAge} onChange={handleChange} />
+                <input type='number' name='minAge' max='35' value={input.minAge} onChange={handleChange} />
                 <label>Max: </label>
-                <input type='text' name='maxAge' max='35' value={input.maxAge} onChange={handleChange} />
+                <input type='number' name='maxAge' max='35' value={input.maxAge} onChange={handleChange} />
                 {errors.age && (<p className='danger'>{errors.age}</p>)}
             </div>
             <div>
@@ -211,7 +213,7 @@ export default function Create() {
                 {input.temperament.map(e => (
                     <div  key={addKey()}>
                         <p>{e}</p>
-                        <button onClick={handleDelete} value={e}>X</button>
+                        <button className='delete' onClick={handleDelete} value={e}>X</button>
                     </div>
                 ))}
             </div>
@@ -219,6 +221,10 @@ export default function Create() {
                 <button type='submit'>Create Dog</button> 
             </div>
           </form>
+          <Link to= '/home'>
+            <button className="btndet"> go Back</button>
+        </Link>
+        </div>
         </div>
     );
 }

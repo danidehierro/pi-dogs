@@ -43,13 +43,12 @@ export function getTemperament(){
     export function getNameDog(name){
         return async function (dispatch){
             try {
-                
-                var json = await axios.get(`http://localhost:3001/dogs?name=${name}`);
-                if(json.data === "error")throw Error
-                return dispatch({
+                var json = await axios.get(`http://localhost:3001/dogs?name=${name}`)
+                  return dispatch({
                     type: GET_NAMEDOG,
                     payload: json.data
                 })
+                
             } catch (error){
                 alert("dogs not found");
                 window.location.href = "http://localhost:3000/home";
@@ -60,14 +59,13 @@ export function getTemperament(){
     export function postDog(payload){
         return async (dispatch) => {
           try {
-            var createVideogame = await axios.post("http://localhost:3001/dog",payload);
+            var createDog= await axios.post("http://localhost:3001/dog",payload);
             console.log("soy la accion",payload)
                return dispatch({
                 type: POST_DOG,
-                payload: payload.data
+                payload: createDog
             })
-            alert("New videogame is created!");
-            return createVideogame;
+
           } catch (e) {
             alert("Dogs name already exist");
             console.log(e);
@@ -103,14 +101,15 @@ export function getTemperament(){
         }
     }
     export function orderName(payload){
+        console.log("soy la accion ",payload)
         return{
             type: ORDER_NAME,
             payload
         }
     }
-    export function orderWeight(payload){
+   /*  export function orderWeight(payload){
         return{
             type: ORDER_WEIGHT,
             payload
         }
-    }
+    } */

@@ -1,7 +1,7 @@
 .detailContainer{
     display: flex;
-    justify-content: center;
-    align-items: centerq;
+    justify-content:center;
+    align-items: center;
     background-color: rgb(136, 204, 224);
     background-size:contain;
     color: #141414;
@@ -9,15 +9,17 @@
 
 
 .detail{
-    
-    grid-template-columns: 50%;
+    display: grid;
+    background-color: antiquewhite;
+     justify-content: center;
     grid-template-rows: max-content;
     font-family: cursive;
+
 
 }
 h2,h3{
     
-    justify-content:flex-end;
+    justify-content:center;
     
     margin: 0%;
 }
@@ -25,8 +27,8 @@ h2,h3{
 
 .imgdetail{
     
-     height: 350px;
-    width:400px ;
+     height: 30rem;
+    width:50rem ;
 }
 .btndet {
     margin-top: 3vh;

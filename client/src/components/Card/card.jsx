@@ -8,8 +8,8 @@ export default function Card({name,img,temperament,weight}){
             <div className="Card">
                 <h4 className="cardTitle">{name}</h4>
                 <img src={img} alt="img not found" className="image" />
-                <h5 className="generos2">{weight}</h5>
-                <h5 className="generos"> {temperament}</h5>
+                <h5 className="weigth">{"weight "+weight+"kg"}</h5>
+                <h5 className="temperament"> {temperament.join(", ")}</h5>
             </div>
 
 
